@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Điểm Phỏng Vấn Ban Sự Kiện - MCCM</title>
+    <title>Bảng Điểm Phỏng Vấn Ban Tài chính - MCCM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -63,7 +63,7 @@
                     </div>
                     <div>
                         <h1 class="text-xl font-bold tracking-tight text-slate-900">MCCM EVENT INTERVIEW</h1>
-                        <p class="text-xs text-slate-500">Hệ thống Đánh giá & Chấm điểm Ứng viên - Ban Sự kiện MCCM</p>
+                        <p class="text-xs text-slate-500">Hệ thống Đánh giá & Chấm điểm Ứng viên - Ban Tài chính MCCM</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -184,7 +184,7 @@
                     <!-- Decision rules card -->
                     <div class="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 text-xs text-indigo-800 space-y-2">
                         <div class="font-bold flex items-center gap-1">
-                            <span class="material-icons text-sm">info</span> Quy chế tuyển chọn Ban Sự kiện:
+                            <span class="material-icons text-sm">info</span> Quy chế tuyển chọn Ban Tài chính:
                         </div>
                         <ul class="list-disc pl-4 space-y-1">
                             <li><strong class="text-emerald-700">Đỗ:</strong> Tổng điểm tích lũy đạt từ <strong>8.0 / 10</strong> trở lên.</li>
@@ -217,7 +217,7 @@
                 part: 'part1',
                 partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 1',
-                text: 'Theo bạn, Ban Sự kiện trong một câu lạc bộ có vai trò gì và chịu trách nhiệm những mảng công việc nào?',
+                text: 'Theo bạn, Ban Tài chính trong một câu lạc bộ có vai trò gì và chịu trách nhiệm những mảng công việc nào?',
                 keys: [
                     'Lên ý tưởng sáng tạo, xây dựng chủ đề (concept/theme) cho chương trình.',
                     'Xây dựng kịch bản chương trình (timeline chạy, kịch bản MC, kịch bản kỹ thuật).',
@@ -231,7 +231,7 @@
                 part: 'part1',
                 partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 2',
-                text: 'Vì sao bạn muốn ứng tuyển vào Ban Sự kiện của MCCM chứ không phải các ban khác?',
+                text: 'Vì sao bạn muốn ứng tuyển vào Ban Tài chính của MCCM chứ không phải các ban khác?',
                 keys: [
                     'Có mục tiêu cá nhân rõ ràng (thích sự sôi động, muốn rèn luyện kỹ năng quản lý thời gian, chịu áp lực).',
                     'Đưa ra lý do lựa chọn MCCM cụ thể (môi trường hòa đồng, phù hợp định hướng sáng tạo nghệ thuật).'
@@ -244,7 +244,7 @@
                 part: 'part1',
                 partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 3',
-                text: 'Theo bạn, một thành viên Ban Sự kiện cần có những tố chất hay kỹ năng quan trọng nhất nào?',
+                text: 'Theo bạn, một thành viên Ban tài chính cần có những tố chất hay kỹ năng quan trọng nhất nào?',
                 keys: [
                     'Nêu được ít nhất 2 ý: Tinh thần trách nhiệm cao, chịu lực tốt, nhanh nhẹn, hoạt ngôn, có khả năng làm việc nhóm.'
                 ],
@@ -333,7 +333,7 @@
                 part: 'part2',
                 partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 10',
-                text: 'Khi lựa chọn địa điểm tổ chức sự kiện (trong nhà/ngoài trời), Ban Sự kiện cần lưu ý và khảo sát những yếu tố kỹ thuật nào?',
+                text: 'Khi lựa chọn địa điểm tổ chức sự kiện (trong nhà/ngoài trời), Ban Tài chính cần lưu ý và khảo sát những yếu tố kỹ thuật nào?',
                 keys: [
                     'Yếu tố cơ bản: Sức chứa tối đa, hệ thống nguồn điện cấp cho âm thanh, vị trí lối thoát hiểm, khu vực vệ sinh, chi phí.'
                 ],
@@ -801,7 +801,7 @@
             const finalStatus = document.getElementById('display-status').innerText.replace(/[^\w\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂĐÊÔƠƯưăâđêôơư]/g, '').trim();
 
             let csvContent = "\uFEFF"; // Unicode BOM for Excel compatibility
-            csvContent += "BẢNG ĐIỂM CHI TIẾT PHỎNG VẤN BAN SỰ KIỆN (MCCM)\n";
+            csvContent += "BẢNG ĐIỂM CHI TIẾT PHỎNG VẤN Ban Tài chính (MCCM)\n";
             csvContent += `Ứng viên,${candName}\n`;
             csvContent += `Người chấm (IV),${ivName}\n`;
             csvContent += `Ngày phỏng vấn,${date}\n`;
