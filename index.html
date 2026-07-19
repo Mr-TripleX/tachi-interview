@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Điểm Phỏng Vấn TACHI - MCCM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom scrollbar for better spreadsheet feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+            }
+            .print-card {
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 transition-colors duration-200">
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 py-4 px-6 no-print shadow-sm">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center shadow-md">
+                        <span class="material-icons">assessment</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-slate-900">TACHI INTERVIEW SHEET</h1>
+                        <p class="text-xs text-slate-500">Hệ thống Đánh giá & Chấm điểm Ứng viên - Ban Tài chính MCCM</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="exportToCSV()" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm">
+                        <span class="material-icons text-sm">download</span> Xuất Excel (CSV)
+                    </button>
+                    <button onclick="window.print()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm">
+                        <span class="material-icons text-sm">print</span> In Phiếu / Lưu PDF
+                    </button>
+                    <button onclick="resetAll()" class="flex items-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-sm font-medium px-4 py-2 rounded-lg transition border border-rose-200">
+                        <span class="material-icons text-sm">restart_alt</span> Đặt lại
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Side: Interactive Evaluation Grid (Span 8) -->
+            <div class="lg:col-span-8 space-y-6">
+                <!-- Candidate Info Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm print-card">
+                    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="material-icons text-blue-600">badge</span> Thông Tin Ứng Viên & Người Đánh Giá
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tên Ứng Viên</label>
+                            <input type="text" id="cand-name" oninput="saveCandidateData()" placeholder="Nhập họ và tên..." class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Người Phỏng Vấn (IV)</label>
+                            <input type="text" id="iv-name" oninput="saveCandidateData()" placeholder="Nhập tên người chấm..." class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Ngày Phỏng Vấn</label>
+                            <input type="date" id="iv-date" onchange="saveCandidateData()" class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Part Section Selector -->
+                <div class="bg-white border border-slate-200 rounded-xl p-1.5 flex flex-wrap gap-1 no-print shadow-sm">
+                    <button onclick="switchTab('all')" id="tab-all" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-blue-600 text-white shadow-sm">Tất cả (24 câu)</button>
+                    <button onclick="switchTab('part1')" id="tab-part1" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.I: Công việc (Hệ số 1)</button>
+                    <button onclick="switchTab('part2')" id="tab-part2" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.II: Chuyên môn (Hệ số 2)</button>
+                    <button onclick="switchTab('part3')" id="tab-part3" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.III: Tình huống (Hệ số 2)</button>
+                    <button onclick="switchTab('part4')" id="tab-part4" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.IV: Phụ (Hệ số 1)</button>
+                </div>
+
+                <!-- Detailed Sheet -->
+                <div id="questions-container" class="space-y-6">
+                    <!-- Dynamic Questions will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Right Side: Real-time Evaluation Dashboard (Span 4) -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm print-card sticky top-6">
+                    <h2 class="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
+                        <span class="material-icons text-blue-600">dashboard</span> Bảng Điểm Tổng Hợp
+                    </h2>
+
+                    <!-- Final Result Circular/Box Display -->
+                    <div class="bg-slate-50 rounded-2xl p-6 text-center border border-slate-100 mb-6">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Điểm Trung Bình Trọng Số</div>
+                        <div id="display-score" class="text-5xl font-black text-slate-400 transition-colors duration-300">0.00</div>
+                        
+                        <!-- Status Badge -->
+                        <div class="mt-4 flex justify-center">
+                            <span id="display-status" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-slate-200 text-slate-600 transition-all duration-300">
+                                <span class="material-icons text-sm">hourglass_empty</span> Chưa đánh giá
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Part Scores Rollup -->
+                    <div class="space-y-4 mb-6">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Điểm Thành Phần (Thang 10)</h3>
+                        
+                        <!-- Part 1 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div>
+                                <span class="text-xs font-bold text-slate-600 block">Phần I: Công việc (x1)</span>
+                                <span class="text-[10px] text-slate-400">Tỷ trọng: 16.7%</span>
+                            </div>
+                            <span id="score-p1" class="text-base font-bold text-slate-700">0.0</span>
+                        </div>
+
+                        <!-- Part 2 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div>
+                                <span class="text-xs font-bold text-slate-600 block">Phần II: Chuyên môn (x2)</span>
+                                <span class="text-[10px] text-slate-400">Tỷ trọng: 33.3%</span>
+                            </div>
+                            <span id="score-p2" class="text-base font-bold text-slate-700">0.0</span>
+                        </div>
+
+                        <!-- Part 3 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div>
+                                <span class="text-xs font-bold text-slate-600 block">Phần III: Tình huống (x2)</span>
+                                <span class="text-[10px] text-slate-400">Tỷ trọng: 33.3%</span>
+                            </div>
+                            <span id="score-p3" class="text-base font-bold text-slate-700">0.0</span>
+                        </div>
+
+                        <!-- Part 4 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div>
+                                <span class="text-xs font-bold text-slate-600 block">Phần IV: Câu hỏi phụ (x1)</span>
+                                <span class="text-[10px] text-slate-400">Tỷ trọng: 16.7%</span>
+                            </div>
+                            <span id="score-p4" class="text-base font-bold text-slate-700">0.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Decision rules card -->
+                    <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 text-xs text-blue-800 space-y-2">
+                        <div class="font-bold flex items-center gap-1">
+                            <span class="material-icons text-sm">info</span> Quy chế xét duyệt tuyển chọn:
+                        </div>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong class="text-emerald-700">Đỗ:</strong> Tổng điểm tích lũy đạt từ <strong>8.0 / 10</strong> trở lên.</li>
+                            <li><strong class="text-amber-700">Cân nhắc:</strong> Tổng điểm đạt trong khoảng từ <strong>5.0 - 7.9 / 10</strong>.</li>
+                            <li><strong class="text-rose-700">Trượt:</strong> Tổng điểm trung bình tích lũy dưới <strong>5.0 / 10</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Quick stats / progress bar -->
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <div class="flex justify-between text-xs font-semibold text-slate-500 mb-1">
+                            <span>Tiến độ chấm điểm</span>
+                            <span id="grading-progress">0 / 24 câu hỏi</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Core Database of Questions
+        const QUESTIONS = [
+            // PART 1: CÔNG VIỆC CỦA BAN (HỆ SỐ 1)
+            {
+                id: 1,
+                part: 'part1',
+                partTitle: 'Phần I: Công việc của ban',
+                num: 'Câu 1',
+                text: 'Theo bạn, Ban Tài chính trong một câu lạc bộ có vai trò gì?',
+                keys: [
+                    'Quản lý dòng tiền/ngân sách thu chi.',
+                    'Tìm kiếm nguồn lực hoặc các đối tác tài trợ để duy trì câu lạc bộ.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 2,
+                part: 'part1',
+                partTitle: 'Phần I: Công việc của ban',
+                num: 'Câu 2',
+                text: 'Vì sao bạn muốn ứng tuyển vào Ban Tài chính của MCCM?',
+                keys: [
+                    'Mục tiêu cá nhân rõ ràng (Học đàm phán, thích con số, quản trị rủi ro).',
+                    'Đưa ra lý do chọn cụ thể MCCM (Yêu mến, định hướng phù hợp).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 3,
+                part: 'part1',
+                partTitle: 'Phần I: Công việc của ban',
+                num: 'Câu 3',
+                text: 'Theo bạn, một thành viên Ban Tài chính cần có những tố chất nào?',
+                keys: [
+                    'Nêu ít nhất 2 ý: Cẩn thận, Trung thực, Chịu áp lực, Khéo léo.'
+                ],
+                score: null,
+                note: ''
+            },
+            // PART 2: CHUYÊN MÔN (HỆ SỐ 2)
+            {
+                id: 4,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 4',
+                text: 'Theo bạn, công việc của phân ban Tài chính là gì? Bạn đã từng có kinh nghiệm làm trong ban Tài chính trước đó chưa? Nếu chưa/ít kinh nghiệm, bạn sẽ làm gì để cải thiện khả năng chuyên môn của mình?',
+                keys: [
+                    'Kể ra đầu việc: Lập dự trù, Gọi tài trợ, Quản lý thu chi.',
+                    'Cách cải thiện: Chủ động hỏi đáp anh chị đi trước, chủ động tự tra cứu học hỏi.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 5,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 5',
+                text: 'Nếu có 500k, bạn sẽ quản lý nó thế nào cho một event nhỏ (ví dụ: acoustic buổi chiều)?',
+                keys: [
+                    'Chia nhỏ mục chi một cách rõ ràng và hợp lý.',
+                    'Bắt buộc phải lập riêng Quỹ dự phòng phát sinh (10-20% tổng ngân quỹ).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 6,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 6',
+                text: 'Theo bạn, CLB nên xin tài trợ từ đâu? Gợi ý 2–3 đơn vị cụ thể.',
+                keys: [
+                    'Đề xuất các đơn vị hướng tới tệp giới trẻ/học sinh (Trung tâm Anh ngữ, Quán nước, Yamaha Music, TH True Milk, ...).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 7,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 7',
+                text: 'Theo bạn, một bảng dự trù cần có những mục nào?',
+                keys: [
+                    'Tối thiểu liệt kê được: Tên sản phẩm/đồ dùng, Số lượng, Đơn giá, Thành tiền, Quỹ dự phòng.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 8,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 8',
+                text: 'Bạn hãy nêu các quyền lợi cơ bản mà 1 NTT có thể nhận được',
+                keys: [
+                    'Nêu ít nhất 2 trong 3 mảng: Truyền thông (logo, bài viết), Sự kiện (đặt booth, standee quảng bá), Quyền lợi Database.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 9,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 9',
+                text: 'Bạn hãy nêu quy trình gọi NTT? Có những điều gì cần lưu ý (phong thái/lời nói)',
+                keys: [
+                    'Quy trình cơ bản: Tìm kiếm nguồn lực thông tin -> Gửi hồ sơ chào tài trợ -> Đàm phán thương lượng.',
+                    'Lưu ý: Luôn có phong thái Lịch sự, Nói rõ ràng, Giữ tự tin.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 10,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 10',
+                text: 'Bạn chọn chất lượng hay giá tiền',
+                keys: [
+                    'Đưa ra tư duy tối ưu/cân bằng: Đảm bảo chất lượng tối thiểu cần đạt nằm trong khung chi phí cho phép.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 11,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 11',
+                text: 'Bạn sẽ làm gì để thuyết phục một nhà tài trợ nhỏ đồng hành với CLB?',
+                keys: [
+                    'Nêu quyền lợi thiết thực, Chi phí hợp tác vừa phải/hợp lý, Cam kết hỗ trợ tiếp cận đúng tệp học sinh mong muốn.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 12,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 12',
+                text: 'Theo bạn, những yếu tố nào là quan trọng nhất khi lựa chọn một đối tác tài trợ cho CLB? Bạn hãy nêu 1 NTT tiềm năng và giải thích sự lựa chọn của bạn.',
+                keys: [
+                    'Nhấn mạnh vào: Sự trùng khớp, phù hợp về tệp khách hàng đôi bên (NTT muốn bán sản phẩm tới học sinh CLB).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 13,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 13',
+                text: 'Bạn nghĩ rằng việc tài trợ có thể ảnh hưởng đến các quyết định chi tiêu và kế hoạch tài chính của CLB như thế nào?',
+                keys: [
+                    'Mặt tích cực: Mở rộng quy mô, nâng cao chất lượng event.',
+                    'Mặt rủi ro: Dễ rơi vào thế bị động khi bị phụ thuộc tiến độ giải ngân từ NTT.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 14,
+                part: 'part2',
+                partTitle: 'Phần II: Chuyên môn',
+                num: 'Câu 14',
+                text: 'Giữa 2 NTT Bạc và 1 NTT Vàng, bạn sẽ chọn phương án nào',
+                keys: [
+                    'Chọn 1 Vàng: Tiết kiệm thời gian, dễ quản trị hồ sơ và quyền lợi, độ nhận diện thương hiệu tốt hơn.',
+                    'Chọn 2 Bạc: Giảm rủi ro bị phụ thuộc tuyệt đối nguồn ngân sách vào 1 bên.',
+                    '*(Chọn phương án nào cũng chấp nhận nếu lập luận đúng tư duy tài chính).*'
+                ],
+                score: null,
+                note: ''
+            },
+            // PART 3: TÌNH HUỐNG (HỆ SỐ 2)
+            {
+                id: 15,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 15',
+                text: 'Bạn sẽ giải quyết như thế nào khi NTT yêu cầu 3000 Database nhưng hiện tại phía CLB chỉ có thể đáp ứng 1500 Database',
+                keys: [
+                    'Đàm phán thương lượng bù đắp bằng các quyền lợi khác (tăng số lượng post, seeding hội nhóm).',
+                    'Đề xuất tạo minigame hoặc đăng ký form phụ mới để tích cực thu thập bù đắp số lượng còn thiếu.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 16,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 16',
+                text: 'Bạn hãy thuyết phục mình mua một cuốn sổ với giá gấp ba lần giá ban đầu của cuốn sổ đó.',
+                keys: [
+                    'Chỉ ra và đẩy mạnh giá trị gia tăng đặc biệt (Bản thiết kế giới hạn, Ý nghĩa đóng góp quỹ từ thiện, Ý nghĩa nhân văn của dự án).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 17,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 17',
+                text: 'Giả sử trong lúc bạn đang gọi điện cho NTT, cuộc gọi bị ngắt giữa chừng vì những lý do khách quan (Hết tiền điện thoại, Sóng yếu...), bạn sẽ xử lý thế nào?',
+                keys: [
+                    'Chủ động khắc phục và gọi lại ngay lập tức.',
+                    'Gửi lời xin lỗi chân thành trước, tóm tắt nhanh nội dung đoạn hội thoại trước đó rồi tiếp tục.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 18,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 18',
+                text: 'Khi gần đến ngày diễn ra sự kiện chính của dự án, phía NTT đột nhiên yêu cầu mức quyền lợi khác mà gây khó khăn cho phía BTC, bạn sẽ làm gì?',
+                keys: [
+                    'Luôn giữ bình tĩnh, rà soát đối chiếu lại điều khoản thỏa thuận/Hợp đồng đã ký.',
+                    'Đàm phán lịch sự giải bày khó khăn kỹ thuật và đưa ra giải pháp thay thế hợp lý.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 19,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 19',
+                text: 'Bạn phát hiện một khoản chi “lạ” trong file chi tiêu do thành viên khác gửi. Người đó bảo "do nhầm thôi, không quan trọng đâu". Bạn sẽ làm gì?',
+                keys: [
+                    'Kiên quyết rà soát và làm rõ đến cùng. Nguyên tắc tài chính là rõ ràng, không bỏ qua.',
+                    'Nếu người đó không hợp tác hoặc không giải trình được rõ ràng, báo cáo Trưởng ban/Cấp trên.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 20,
+                part: 'part3',
+                partTitle: 'Phần III: Tình huống',
+                num: 'Câu 20',
+                text: 'Một nhà tài trợ đồng ý tài trợ 1 triệu đồng, nhưng họ muốn logo được đặt ở giữa backdrop – điều không phù hợp với thiết kế. Bạn sẽ phản hồi thế nào?',
+                keys: [
+                    'Từ chối khéo léo với lý do giữ quy chuẩn thẩm mỹ chung cho sự kiện và đảm bảo logo của họ không bị che khuất.',
+                    'Đề xuất bố trí logo ở các không gian nổi bật tương đương khác (Vị trí chính trên Standee đặt cửa, Đăng cảm ơn riêng biệt).'
+                ],
+                score: null,
+                note: ''
+            },
+            // PART 4: PHỤ (HỆ SỐ 1)
+            {
+                id: 21,
+                part: 'part4',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                num: 'Câu 21',
+                text: 'Vậy bạn còn apply CLB nào ngoài MCCM không? Nếu đỗ ..., thì bạn chọn cống hiến cho CLB nào?',
+                keys: [
+                    'Thành thật chia sẻ tình trạng cá nhân.',
+                    'Cam kết phân bổ được thời gian và cam kết mức độ ưu tiên cống hiến lâu dài cho MCCM.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 22,
+                part: 'part4',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                num: 'Câu 22',
+                text: 'Bạn đánh giá buổi phỏng vấn hôm nay bao nhiêu trên mười? Tại sao?',
+                keys: [
+                    'Đưa ra thang điểm số cụ thể rõ ràng.',
+                    'Tự nhận thức được điểm mình làm tốt và điểm mình còn hạn chế trong buổi phỏng vấn để cải thiện.'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 23,
+                part: 'part4',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                num: 'Câu 23',
+                text: 'Bạn còn gì muốn nhắn gửi MCCM không?',
+                keys: [
+                    'Thể hiện sự quan tâm tới CLB (Đặt câu hỏi ngược lại cho IV, hoặc thể hiện nhiệt huyết quyết tâm muốn đồng hành).'
+                ],
+                score: null,
+                note: ''
+            },
+            {
+                id: 24,
+                part: 'part4',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                num: 'Câu 24',
+                text: 'Thử thách nhỏ: làm hành động thể hiện muốn vào CLB (càng hăng thì ok)',
+                keys: [
+                    'Sẵn sàng hành động nhanh chóng không rụt rè.',
+                    'Bộc lộ năng lượng tự tin, tích cực (Thả tim, chào khẩu hiệu, biểu cảm tươi vui).'
+                ],
+                score: null,
+                note: ''
+            }
+        ];
+
+        let activeTab = 'all';
+
+        // Render Sheet UI
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            let currentPart = '';
+
+            QUESTIONS.forEach((q) => {
+                // If filtering by part
+                if (activeTab !== 'all' && q.part !== activeTab) return;
+
+                // Group header
+                if (activeTab === 'all' && q.part !== currentPart) {
+                    currentPart = q.part;
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'pt-4 pb-2 border-b-2 border-slate-200';
+                    groupHeader.innerHTML = `
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider">${q.partTitle}</h3>
+                    `;
+                    container.appendChild(groupHeader);
+                }
+
+                // Question Row Component
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-xl p-5 border transition-all duration-300 print-card ${q.score !== null ? 'border-slate-300 shadow-sm' : 'border-slate-200'}`;
+                
+                // Key Answers HTML
+                const keysHTML = q.keys.map(k => `
+                    <div class="flex items-start gap-2 text-slate-600">
+                        <span class="material-icons text-xs text-emerald-500 mt-0.5">check_circle</span>
+                        <span>${k}</span>
+                    </div>
+                `).join('');
+
+                // Score Button Colors
+                const scorePresets = [
+                    { val: 0, label: 'Chưa đạt', desc: '0đ' },
+                    { val: 2, label: 'Yếu', desc: '2đ' },
+                    { val: 5, label: 'Đạt', desc: '5đ' },
+                    { val: 8, label: 'Tốt', desc: '8đ' },
+                    { val: 10, label: 'Xuất sắc', desc: '10đ' }
+                ];
+
+                const scoreButtonsHTML = scorePresets.map(preset => {
+                    const isSelected = q.score === preset.val;
+                    let activeClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200';
+                    if (isSelected) {
+                        if (preset.val === 0) activeClass = 'bg-rose-600 text-white shadow-sm ring-2 ring-rose-300';
+                        else if (preset.val === 2) activeClass = 'bg-orange-500 text-white shadow-sm ring-2 ring-orange-300';
+                        else if (preset.val === 5) activeClass = 'bg-amber-500 text-white shadow-sm ring-2 ring-amber-300';
+                        else if (preset.val === 8) activeClass = 'bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-300';
+                        else if (preset.val === 10) activeClass = 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300';
+                    }
+                    return `
+                        <button onclick="setScore(${q.id}, ${preset.val})" class="flex-1 py-1 px-2 text-xs font-semibold rounded-lg transition-all duration-200 ${activeClass}">
+                            <div class="text-[10px] opacity-85 leading-none">${preset.label}</div>
+                            <div class="text-xs leading-tight">${preset.desc}</div>
+                        </button>
+                    `;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="flex flex-col gap-4">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-2 py-0.5 rounded-full mb-1">
+                                    ${q.num}
+                                </span>
+                                <h4 class="text-sm font-semibold text-slate-950 leading-relaxed">${q.text}</h4>
+                            </div>
+                            
+                            <!-- Custom Points Input (Optional precision) -->
+                            <div class="flex items-center gap-1.5 no-print">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase">Nhập điểm</label>
+                                <input type="number" min="0" max="10" step="0.5" value="${q.score !== null ? q.score : ''}" 
+                                    onchange="setManualScore(${q.id}, this.value)" 
+                                    placeholder="-" 
+                                    class="w-12 bg-slate-50 border border-slate-200 text-center rounded-lg py-1 text-sm font-bold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition">
+                            </div>
+                        </div>
+
+                        <!-- Guideline Box -->
+                        <div class="bg-emerald-50/50 rounded-lg p-3 border border-emerald-100/50 space-y-1.5 text-xs">
+                            <div class="font-bold text-emerald-800 flex items-center gap-1">
+                                <span class="material-icons text-sm">lightbulb</span> Ý chính cần có (Có ý này = PASS):
+                            </div>
+                            <div class="space-y-1">
+                                ${keysHTML}
+                            </div>
+                        </div>
+
+                        <!-- Grading Actions Row -->
+                        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 pt-2">
+                            <!-- Quick Score Buttons -->
+                            <div class="flex-1 flex gap-1 bg-slate-50 border border-slate-200 p-1 rounded-xl no-print">
+                                ${scoreButtonsHTML}
+                            </div>
+                            
+                            <!-- Custom Quick Note -->
+                            <div class="flex-1 flex items-center gap-2 border border-slate-200 bg-slate-50 px-3 py-1 rounded-xl">
+                                <span class="material-icons text-slate-400 text-sm">note_alt</span>
+                                <input type="text" value="${q.note}" oninput="setNote(${q.id}, this.value)" placeholder="Ghi chú nhanh câu trả lời..." class="w-full bg-transparent text-xs outline-none text-slate-700 placeholder-slate-400">
+                            </div>
+                        </div>
+
+                        <!-- Print Score Display (Only visible during printing) -->
+                        <div class="hidden print:block pt-2 border-t border-dashed border-slate-200 flex justify-between text-xs">
+                            <span class="font-bold">Điểm số: <span class="text-slate-900">${q.score !== null ? q.score + ' / 10' : 'Chưa chấm'}</span></span>
+                            ${q.note ? `<span class="italic text-slate-500">Ghi chú: ${q.note}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Tab switching
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100';
+            });
+            document.getElementById(`tab-${tabId}`).className = 'tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-blue-600 text-white shadow-sm';
+            renderQuestions();
+        }
+
+        // Score Actions
+        function setScore(id, val) {
+            const q = QUESTIONS.find(item => item.id === id);
+            if (q) {
+                q.score = val;
+                calculateFinalScores();
+                renderQuestions();
+            }
+        }
+
+        function setManualScore(id, val) {
+            const q = QUESTIONS.find(item => item.id === id);
+            if (q) {
+                let parsed = parseFloat(val);
+                if (isNaN(parsed)) {
+                    q.score = null;
+                } else {
+                    q.score = Math.max(0, Math.min(10, parsed));
+                }
+                calculateFinalScores();
+                renderQuestions();
+            }
+        }
+
+        function setNote(id, noteText) {
+            const q = QUESTIONS.find(item => item.id === id);
+            if (q) {
+                q.note = noteText;
+            }
+        }
+
+        // Save Candidate Meta
+        function saveCandidateData() {
+            // Can extend to save to localStorage to preserve state on refresh
+            const data = {
+                name: document.getElementById('cand-name').value,
+                iv: document.getElementById('iv-name').value,
+                date: document.getElementById('iv-date').value
+            };
+            localStorage.setItem('tachi_candidate', JSON.stringify(data));
+        }
+
+        function loadCandidateData() {
+            try {
+                const stored = localStorage.getItem('tachi_candidate');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    document.getElementById('cand-name').value = data.name || '';
+                    document.getElementById('iv-name').value = data.iv || '';
+                    document.getElementById('iv-date').value = data.date || '';
+                }
+            } catch (e) {
+                console.error("Localstorage load failed", e);
+            }
+        }
+
+        // Aggregate Calculations
+        function calculateFinalScores() {
+            const parts = ['part1', 'part2', 'part3', 'part4'];
+            const partScores = {};
+            let gradedCount = 0;
+
+            parts.forEach(p => {
+                const filtered = QUESTIONS.filter(q => q.part === p);
+                const scores = filtered.map(q => q.score).filter(s => s !== null);
+                
+                gradedCount += scores.length;
+                
+                if (scores.length > 0) {
+                    const sum = scores.reduce((acc, curr) => acc + curr, 0);
+                    partScores[p] = sum / scores.length;
+                } else {
+                    partScores[p] = 0;
+                }
+            });
+
+            // Update individual part displays
+            document.getElementById('score-p1').innerText = partScores['part1'].toFixed(1);
+            document.getElementById('score-p2').innerText = partScores['part2'].toFixed(1);
+            document.getElementById('score-p3').innerText = partScores['part3'].toFixed(1);
+            document.getElementById('score-p4').innerText = partScores['part4'].toFixed(1);
+
+            // Weighted score formula
+            // Weight: Part 1 (x1), Part 2 (x2), Part 3 (x2), Part 4 (x1)
+            const weightedScore = (
+                (partScores['part1'] * 1) + 
+                (partScores['part2'] * 2) + 
+                (partScores['part3'] * 2) + 
+                (partScores['part4'] * 1)
+            ) / 6;
+
+            const scoreDisplay = document.getElementById('display-score');
+            const statusDisplay = document.getElementById('display-status');
+
+            if (gradedCount > 0) {
+                scoreDisplay.innerText = weightedScore.toFixed(2);
+                
+                // Colorize score text based on classification
+                if (weightedScore >= 8.0) {
+                    scoreDisplay.className = 'text-5xl font-black text-emerald-600 transition-colors duration-300';
+                    statusDisplay.innerHTML = '<span class="material-icons text-sm">check_circle</span> ĐỖ';
+                    statusDisplay.className = 'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-emerald-100 text-emerald-800 transition-all duration-300';
+                } else if (weightedScore >= 5.0) {
+                    scoreDisplay.className = 'text-5xl font-black text-amber-500 transition-colors duration-300';
+                    statusDisplay.innerHTML = '<span class="material-icons text-sm">schedule</span> CÂN NHẮC';
+                    statusDisplay.className = 'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-amber-100 text-amber-800 transition-all duration-300';
+                } else {
+                    scoreDisplay.className = 'text-5xl font-black text-rose-600 transition-colors duration-300';
+                    statusDisplay.innerHTML = '<span class="material-icons text-sm">cancel</span> TRƯỢT';
+                    statusDisplay.className = 'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-rose-100 text-rose-800 transition-all duration-300';
+                }
+            } else {
+                scoreDisplay.innerText = '0.00';
+                scoreDisplay.className = 'text-5xl font-black text-slate-400 transition-colors duration-300';
+                statusDisplay.innerHTML = '<span class="material-icons text-sm">hourglass_empty</span> Chưa đánh giá';
+                statusDisplay.className = 'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-slate-200 text-slate-600 transition-all duration-300';
+            }
+
+            // Progress Indicators
+            document.getElementById('grading-progress').innerText = `${gradedCount} / 24 câu hỏi`;
+            const percent = (gradedCount / 24) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        // Reset
+        function resetAll() {
+            if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ bảng điểm không? Dữ liệu hiện tại sẽ mất.")) {
+                QUESTIONS.forEach(q => {
+                    q.score = null;
+                    q.note = '';
+                });
+                document.getElementById('cand-name').value = '';
+                document.getElementById('iv-name').value = '';
+                document.getElementById('iv-date').value = '';
+                localStorage.removeItem('tachi_candidate');
+                calculateFinalScores();
+                renderQuestions();
+            }
+        }
+
+        // CSV Exporter (UTF-8 with BOM to display accents correctly in Excel)
+        function exportToCSV() {
+            const candName = document.getElementById('cand-name').value || 'Chưa đặt tên';
+            const ivName = document.getElementById('iv-name').value || 'Chưa rõ';
+            const date = document.getElementById('iv-date').value || 'Chưa đặt';
+            
+            // Recalculate average scores to get latest values
+            const p1Avg = document.getElementById('score-p1').innerText;
+            const p2Avg = document.getElementById('score-p2').innerText;
+            const p3Avg = document.getElementById('score-p3').innerText;
+            const p4Avg = document.getElementById('score-p4').innerText;
+            const totalScore = document.getElementById('display-score').innerText;
+            const finalStatus = document.getElementById('display-status').innerText.replace(/[^\w\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂĐÊÔƠƯưăâđêôơư]/g, '').trim();
+
+            let csvContent = "\uFEFF"; // Unicode BOM for Excel compatibility
+            csvContent += "BẢNG ĐIỂM CHI TIẾT PHỎNG VẤN BAN TÀI CHÍNH TACHI (MCCM)\n";
+            csvContent += `Ứng viên,${candName}\n`;
+            csvContent += `Người chấm (IV),${ivName}\n`;
+            csvContent += `Ngày phỏng vấn,${date}\n`;
+            csvContent += `Tổng điểm trung bình trọng số,${totalScore}\n`;
+            csvContent += `Kết luận tuyển chọn,${finalStatus}\n\n`;
+
+            csvContent += "Điểm thành phần:\n";
+            csvContent += `Phần I (Công việc),${p1Avg}\n`;
+            csvContent += `Phần II (Chuyên môn),${p2Avg}\n`;
+            csvContent += `Phần III (Tình huống),${p3Avg}\n`;
+            csvContent += `Phần IV (Câu hỏi phụ),${p4Avg}\n\n`;
+
+            csvContent += "BẢNG ĐIỂM CHI TIẾT TỪNG CÂU HỎI:\n";
+            csvContent += "STT,Câu hỏi,Điểm,Ghi chú của người phỏng vấn\n";
+
+            QUESTIONS.forEach(q => {
+                const scoreText = q.score !== null ? q.score : "Chưa chấm";
+                const cleanQuestion = q.text.replace(/"/g, '""');
+                const cleanNote = q.note.replace(/"/g, '""');
+                csvContent += `${q.num},"${cleanQuestion}",${scoreText},"${cleanNote}"\n`;
+            });
+
+            // Trigger Download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Bảng_điểm_TACHI_${candName.replace(/\s+/g, '_')}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Initialize App
+        window.onload = function() {
+            loadCandidateData();
+            calculateFinalScores();
+            renderQuestions();
+        }
+    </script>
+</body>
+</html>
