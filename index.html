@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Điểm Phỏng Vấn TACHI - MCCM</title>
+    <title>Bảng Điểm Phỏng Vấn Ban Sự Kiện - MCCM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -24,7 +24,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
-        /* Custom scrollbar for better spreadsheet feel */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -56,23 +55,22 @@
 <body class="text-slate-800 transition-colors duration-200">
 
     <div class="min-h-screen flex flex-col">
-        <!-- Header -->
         <header class="bg-white border-b border-slate-200 py-4 px-6 no-print shadow-sm">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center shadow-md">
-                        <span class="material-icons">assessment</span>
+                    <div class="bg-indigo-600 text-white p-2 rounded-xl flex items-center justify-center shadow-md">
+                        <span class="material-icons">event</span>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold tracking-tight text-slate-900">TACHI INTERVIEW SHEET</h1>
-                        <p class="text-xs text-slate-500">Hệ thống Đánh giá & Chấm điểm Ứng viên - Ban Tài chính MCCM</p>
+                        <h1 class="text-xl font-bold tracking-tight text-slate-900">MCCM EVENT INTERVIEW</h1>
+                        <p class="text-xs text-slate-500">Hệ thống Đánh giá & Chấm điểm Ứng viên - Ban Sự kiện MCCM</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="exportToCSV()" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm">
                         <span class="material-icons text-sm">download</span> Xuất Excel (CSV)
                     </button>
-                    <button onclick="window.print()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm">
+                    <button onclick="window.print()" class="flex items-center gap-2 bg-indigo-800 hover:bg-indigo-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-sm">
                         <span class="material-icons text-sm">print</span> In Phiếu / Lưu PDF
                     </button>
                     <button onclick="resetAll()" class="flex items-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-sm font-medium px-4 py-2 rounded-lg transition border border-rose-200">
@@ -82,7 +80,6 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             <!-- Left Side: Interactive Evaluation Grid (Span 8) -->
@@ -90,31 +87,31 @@
                 <!-- Candidate Info Card -->
                 <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm print-card">
                     <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <span class="material-icons text-blue-600">badge</span> Thông Tin Ứng Viên & Người Đánh Giá
+                        <span class="material-icons text-indigo-600">badge</span> Thông Tin Ứng Viên & Người Đánh Giá
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tên Ứng Viên</label>
-                            <input type="text" id="cand-name" oninput="saveCandidateData()" placeholder="Nhập họ và tên..." class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                            <input type="text" id="cand-name" oninput="saveCandidateData()" placeholder="Nhập họ và tên..." class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Người Phỏng Vấn (IV)</label>
-                            <input type="text" id="iv-name" oninput="saveCandidateData()" placeholder="Nhập tên người chấm..." class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                            <input type="text" id="iv-name" oninput="saveCandidateData()" placeholder="Nhập tên người chấm..." class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Ngày Phỏng Vấn</label>
-                            <input type="date" id="iv-date" onchange="saveCandidateData()" class="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
+                            <input type="date" id="iv-date" onchange="saveCandidateData()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-2.5 text-sm font-medium outline-none transition">
                         </div>
                     </div>
                 </div>
 
                 <!-- Part Section Selector -->
                 <div class="bg-white border border-slate-200 rounded-xl p-1.5 flex flex-wrap gap-1 no-print shadow-sm">
-                    <button onclick="switchTab('all')" id="tab-all" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-blue-600 text-white shadow-sm">Tất cả (24 câu)</button>
-                    <button onclick="switchTab('part1')" id="tab-part1" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.I: Công việc (Hệ số 1)</button>
-                    <button onclick="switchTab('part2')" id="tab-part2" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.II: Chuyên môn (Hệ số 2)</button>
-                    <button onclick="switchTab('part3')" id="tab-part3" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.III: Tình huống (Hệ số 2)</button>
-                    <button onclick="switchTab('part4')" id="tab-part4" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.IV: Phụ (Hệ số 1)</button>
+                    <button onclick="switchTab('all')" id="tab-all" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-indigo-600 text-white shadow-sm">Tất cả (24 câu)</button>
+                    <button onclick="switchTab('part1')" id="tab-part1" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.I: Công việc (x1)</button>
+                    <button onclick="switchTab('part2')" id="tab-part2" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.II: Chuyên môn (x2)</button>
+                    <button onclick="switchTab('part3')" id="tab-part3" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.III: Tình huống (x2)</button>
+                    <button onclick="switchTab('part4')" id="tab-part4" class="tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100">P.IV: Câu hỏi phụ (x1)</button>
                 </div>
 
                 <!-- Detailed Sheet -->
@@ -127,7 +124,7 @@
             <div class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm print-card sticky top-6">
                     <h2 class="text-lg font-bold text-slate-900 mb-5 flex items-center gap-2">
-                        <span class="material-icons text-blue-600">dashboard</span> Bảng Điểm Tổng Hợp
+                        <span class="material-icons text-indigo-600">dashboard</span> Bảng Điểm Tổng Hợp
                     </h2>
 
                     <!-- Final Result Circular/Box Display -->
@@ -185,9 +182,9 @@
                     </div>
 
                     <!-- Decision rules card -->
-                    <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 text-xs text-blue-800 space-y-2">
+                    <div class="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 text-xs text-indigo-800 space-y-2">
                         <div class="font-bold flex items-center gap-1">
-                            <span class="material-icons text-sm">info</span> Quy chế xét duyệt tuyển chọn:
+                            <span class="material-icons text-sm">info</span> Quy chế tuyển chọn Ban Sự kiện:
                         </div>
                         <ul class="list-disc pl-4 space-y-1">
                             <li><strong class="text-emerald-700">Đỗ:</strong> Tổng điểm tích lũy đạt từ <strong>8.0 / 10</strong> trở lên.</li>
@@ -203,7 +200,7 @@
                             <span id="grading-progress">0 / 24 câu hỏi</span>
                         </div>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+                            <div id="progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
                         </div>
                     </div>
                 </div>
@@ -212,18 +209,19 @@
     </div>
 
     <script>
-        // Core Database of Questions
+        // Core Database of Questions - Event Department MCCM Edition
         const QUESTIONS = [
             // PART 1: CÔNG VIỆC CỦA BAN (HỆ SỐ 1)
             {
                 id: 1,
                 part: 'part1',
-                partTitle: 'Phần I: Công việc của ban',
+                partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 1',
-                text: 'Theo bạn, Ban Tài chính trong một câu lạc bộ có vai trò gì?',
+                text: 'Theo bạn, Ban Sự kiện trong một câu lạc bộ có vai trò gì và chịu trách nhiệm những mảng công việc nào?',
                 keys: [
-                    'Quản lý dòng tiền/ngân sách thu chi.',
-                    'Tìm kiếm nguồn lực hoặc các đối tác tài trợ để duy trì câu lạc bộ.'
+                    'Lên ý tưởng sáng tạo, xây dựng chủ đề (concept/theme) cho chương trình.',
+                    'Xây dựng kịch bản chương trình (timeline chạy, kịch bản MC, kịch bản kỹ thuật).',
+                    'Chuẩn bị hậu cần (mua sắm đồ dùng, thiết lập sân khấu, thiết bị) và trực tiếp điều phối tiến trình chạy sự kiện.'
                 ],
                 score: null,
                 note: ''
@@ -231,12 +229,12 @@
             {
                 id: 2,
                 part: 'part1',
-                partTitle: 'Phần I: Công việc của ban',
+                partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 2',
-                text: 'Vì sao bạn muốn ứng tuyển vào Ban Tài chính của MCCM?',
+                text: 'Vì sao bạn muốn ứng tuyển vào Ban Sự kiện của MCCM chứ không phải các ban khác?',
                 keys: [
-                    'Mục tiêu cá nhân rõ ràng (Học đàm phán, thích con số, quản trị rủi ro).',
-                    'Đưa ra lý do chọn cụ thể MCCM (Yêu mến, định hướng phù hợp).'
+                    'Có mục tiêu cá nhân rõ ràng (thích sự sôi động, muốn rèn luyện kỹ năng quản lý thời gian, chịu áp lực).',
+                    'Đưa ra lý do lựa chọn MCCM cụ thể (môi trường hòa đồng, phù hợp định hướng sáng tạo nghệ thuật).'
                 ],
                 score: null,
                 note: ''
@@ -244,11 +242,11 @@
             {
                 id: 3,
                 part: 'part1',
-                partTitle: 'Phần I: Công việc của ban',
+                partTitle: 'Phần I: Công việc của ban (Hệ số 1)',
                 num: 'Câu 3',
-                text: 'Theo bạn, một thành viên Ban Tài chính cần có những tố chất nào?',
+                text: 'Theo bạn, một thành viên Ban Sự kiện cần có những tố chất hay kỹ năng quan trọng nhất nào?',
                 keys: [
-                    'Nêu ít nhất 2 ý: Cẩn thận, Trung thực, Chịu áp lực, Khéo léo.'
+                    'Nêu được ít nhất 2 ý: Tinh thần trách nhiệm cao, chịu lực tốt, nhanh nhẹn, hoạt ngôn, có khả năng làm việc nhóm.'
                 ],
                 score: null,
                 note: ''
@@ -257,12 +255,12 @@
             {
                 id: 4,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 4',
-                text: 'Theo bạn, công việc của phân ban Tài chính là gì? Bạn đã từng có kinh nghiệm làm trong ban Tài chính trước đó chưa? Nếu chưa/ít kinh nghiệm, bạn sẽ làm gì để cải thiện khả năng chuyên môn của mình?',
+                text: 'Bạn đã từng có kinh nghiệm tổ chức, lên kế hoạch hoặc hỗ trợ chạy một sự kiện/dự án nào chưa? Nếu chưa, bạn sẽ làm gì để nhanh chóng bắt nhịp?',
                 keys: [
-                    'Kể ra đầu việc: Lập dự trù, Gọi tài trợ, Quản lý thu chi.',
-                    'Cách cải thiện: Chủ động hỏi đáp anh chị đi trước, chủ động tự tra cứu học hỏi.'
+                    'Chia sẻ kinh nghiệm thực tế (dù là sự kiện nhỏ ở lớp/trường) rõ ràng vai trò.',
+                    'Nếu chưa: Thể hiện tinh thần chủ động tự học, quan sát anh chị đi trước, tích cực hỏi đáp.'
                 ],
                 score: null,
                 note: ''
@@ -270,12 +268,12 @@
             {
                 id: 5,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 5',
-                text: 'Nếu có 500k, bạn sẽ quản lý nó thế nào cho một event nhỏ (ví dụ: acoustic buổi chiều)?',
+                text: 'Bạn biết những công cụ hay phương pháp nào để xây dựng và quản lý tiến độ công việc (Timeline/Gantt chart/Checklist)?',
                 keys: [
-                    'Chia nhỏ mục chi một cách rõ ràng và hợp lý.',
-                    'Bắt buộc phải lập riêng Quỹ dự phòng phát sinh (10-20% tổng ngân quỹ).'
+                    'Biết sử dụng Excel/Google Sheets, Notion hoặc Trello để phân rã nhiệm vụ.',
+                    'Biết cách phân chia công việc chi tiết kèm người chịu trách nhiệm chính (PIC) và hạn hoàn thành (Deadline).'
                 ],
                 score: null,
                 note: ''
@@ -283,11 +281,12 @@
             {
                 id: 6,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 6',
-                text: 'Theo bạn, CLB nên xin tài trợ từ đâu? Gợi ý 2–3 đơn vị cụ thể.',
+                text: 'Giả sử bạn được giao nhiệm vụ lên ý tưởng (Concept) cho một chương trình Teambuilding dã ngoại dành cho 100 thành viên CLB. Bạn sẽ gồm những mục lớn nào?',
                 keys: [
-                    'Đề xuất các đơn vị hướng tới tệp giới trẻ/học sinh (Trung tâm Anh ngữ, Quán nước, Yamaha Music, TH True Milk, ...).'
+                    'Thiết kế chuỗi hoạt động rõ ràng (Khởi động -> Trò chơi chính -> Gala tối).',
+                    'Xác định rõ ràng mục tiêu gắn kết thành viên, thông điệp truyền tải.'
                 ],
                 score: null,
                 note: ''
@@ -295,11 +294,11 @@
             {
                 id: 7,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 7',
-                text: 'Theo bạn, một bảng dự trù cần có những mục nào?',
+                text: 'Theo bạn, một bản Kịch bản chạy chương trình (Timeline/Agenda) cho đêm nhạc cần những cột thông tin cơ bản nào?',
                 keys: [
-                    'Tối thiểu liệt kê được: Tên sản phẩm/đồ dùng, Số lượng, Đơn giá, Thành tiền, Quỹ dự phòng.'
+                    'Tối thiểu liệt kê được: Thời gian (Time), Nội dung tiết mục, Người phụ trách (PIC), Âm thanh/Ánh sáng/Kỹ thuật, Đạo cụ hậu cần.'
                 ],
                 score: null,
                 note: ''
@@ -307,11 +306,12 @@
             {
                 id: 8,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 8',
-                text: 'Bạn hãy nêu các quyền lợi cơ bản mà 1 NTT có thể nhận được',
+                text: 'Bạn hiểu thế nào về công tác "Hậu cần" (Logistics) trong tổ chức sự kiện? Nêu ví dụ các loại đồ dùng thông dụng cần chuẩn bị cho một đêm nhạc nhỏ.',
                 keys: [
-                    'Nêu ít nhất 2 trong 3 mảng: Truyền thông (logo, bài viết), Sự kiện (đặt booth, standee quảng bá), Quyền lợi Database.'
+                    'Khái niệm: Chuẩn bị, vận chuyển và bố trí toàn bộ cơ sở vật chất trước sự kiện.',
+                    'Ví dụ: Backdrop, standee, ghế ngồi khán giả, nước uống cho ekip/khách, đạo cụ biểu diễn, quà tặng.'
                 ],
                 score: null,
                 note: ''
@@ -319,12 +319,11 @@
             {
                 id: 9,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 9',
-                text: 'Bạn hãy nêu quy trình gọi NTT? Có những điều gì cần lưu ý (phong thái/lời nói)',
+                text: 'Trong khâu tổ chức có nhiều vị trí như: Đạo diễn sân khấu, Âm thanh ánh sáng, Check-in, Hậu cần đạo cụ. Bạn tự tin ở vị trí nào nhất? Vì sao?',
                 keys: [
-                    'Quy trình cơ bản: Tìm kiếm nguồn lực thông tin -> Gửi hồ sơ chào tài trợ -> Đàm phán thương lượng.',
-                    'Lưu ý: Luôn có phong thái Lịch sự, Nói rõ ràng, Giữ tự tin.'
+                    'Đưa ra lựa chọn cụ thể và thuyết phục bằng năng lực cá nhân (sự cẩn thận ở khâu check-in, sự nhanh nhẹn ở điều phối sân khấu...).'
                 ],
                 score: null,
                 note: ''
@@ -332,11 +331,11 @@
             {
                 id: 10,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 10',
-                text: 'Bạn chọn chất lượng hay giá tiền',
+                text: 'Khi lựa chọn địa điểm tổ chức sự kiện (trong nhà/ngoài trời), Ban Sự kiện cần lưu ý và khảo sát những yếu tố kỹ thuật nào?',
                 keys: [
-                    'Đưa ra tư duy tối ưu/cân bằng: Đảm bảo chất lượng tối thiểu cần đạt nằm trong khung chi phí cho phép.'
+                    'Yếu tố cơ bản: Sức chứa tối đa, hệ thống nguồn điện cấp cho âm thanh, vị trí lối thoát hiểm, khu vực vệ sinh, chi phí.'
                 ],
                 score: null,
                 note: ''
@@ -344,11 +343,11 @@
             {
                 id: 11,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 11',
-                text: 'Bạn sẽ làm gì để thuyết phục một nhà tài trợ nhỏ đồng hành với CLB?',
+                text: 'Bạn đánh giá thế nào về tầm quan trọng của việc "Rehearsal" (chạy thử/duyệt chương trình) trước giờ G? Rehearsal thường duyệt những gì?',
                 keys: [
-                    'Nêu quyền lợi thiết thực, Chi phí hợp tác vừa phải/hợp lý, Cam kết hỗ trợ tiếp cận đúng tệp học sinh mong muốn.'
+                    'Rất quan trọng để tránh sai sót. Duyệt khớp khớp kịch bản của MC, căn thời gian tiết mục, kiểm tra âm thanh mic và ánh sáng sân khấu.'
                 ],
                 score: null,
                 note: ''
@@ -356,11 +355,12 @@
             {
                 id: 12,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 12',
-                text: 'Theo bạn, những yếu tố nào là quan trọng nhất khi lựa chọn một đối tác tài trợ cho CLB? Bạn hãy nêu 1 NTT tiềm năng và giải thích sự lựa chọn của bạn.',
+                text: 'Nếu được giao làm Leader phụ trách một Tiểu ban nhỏ trong sự kiện, bạn sẽ làm thế nào để phân công công việc công bằng và tạo động lực cho các thành viên?',
                 keys: [
-                    'Nhấn mạnh vào: Sự trùng khớp, phù hợp về tệp khách hàng đôi bên (NTT muốn bán sản phẩm tới học sinh CLB).'
+                    'Lắng nghe và phân chia việc dựa theo thế mạnh từng người; đặt mốc thời gian rõ ràng.',
+                    'Quan tâm hỗ trợ khi thành viên gặp khó khăn, giữ không khí làm việc vui vẻ, tích cực.'
                 ],
                 score: null,
                 note: ''
@@ -368,12 +368,11 @@
             {
                 id: 13,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 13',
-                text: 'Bạn nghĩ rằng việc tài trợ có thể ảnh hưởng đến các quyết định chi tiêu và kế hoạch tài chính của CLB như thế nào?',
+                text: 'Sự tỉ mỉ trong chuẩn bị và sự linh hoạt ứng biến khi chạy chương trình thực tế - theo bạn yếu tố nào quyết định nhiều hơn đến sự thành bại của sự kiện?',
                 keys: [
-                    'Mặt tích cực: Mở rộng quy mô, nâng cao chất lượng event.',
-                    'Mặt rủi ro: Dễ rơi vào thế bị động khi bị phụ thuộc tiến độ giải ngân từ NTT.'
+                    'Lập luận cân bằng: Chuẩn bị tỉ mỉ giúp hạn chế 80% rủi ro, linh hoạt nhạy bén giúp giải quyết triệt để 20% sự cố phát sinh bất ngờ.'
                 ],
                 score: null,
                 note: ''
@@ -381,13 +380,12 @@
             {
                 id: 14,
                 part: 'part2',
-                partTitle: 'Phần II: Chuyên môn',
+                partTitle: 'Phần II: Chuyên môn (Hệ số 2)',
                 num: 'Câu 14',
-                text: 'Giữa 2 NTT Bạc và 1 NTT Vàng, bạn sẽ chọn phương án nào',
+                text: 'Làm sự kiện thường xuyên phải thức khuya, chạy deadline dồn dập trước ngày chạy. Bạn làm cách nào để cân bằng sức khỏe, thời gian học tập và công việc CLB?',
                 keys: [
-                    'Chọn 1 Vàng: Tiết kiệm thời gian, dễ quản trị hồ sơ và quyền lợi, độ nhận diện thương hiệu tốt hơn.',
-                    'Chọn 2 Bạc: Giảm rủi ro bị phụ thuộc tuyệt đối nguồn ngân sách vào 1 bên.',
-                    '*(Chọn phương án nào cũng chấp nhận nếu lập luận đúng tư duy tài chính).*'
+                    'Biết sắp xếp công việc theo thứ tự ưu tiên, ôn bài thi sớm trước sự kiện.',
+                    'Biết chủ động lên tiếng nhờ sự trợ giúp của đồng đội nếu bị quá tải công việc.'
                 ],
                 score: null,
                 note: ''
@@ -396,12 +394,12 @@
             {
                 id: 15,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 15',
-                text: 'Bạn sẽ giải quyết như thế nào khi NTT yêu cầu 3000 Database nhưng hiện tại phía CLB chỉ có thể đáp ứng 1500 Database',
+                text: 'Tình huống: Chỉ còn 15 phút là đến giờ khai mạc, đơn vị âm thanh báo micro chính bị hỏng và không thể kết nối. Bạn xử lý thế nào?',
                 keys: [
-                    'Đàm phán thương lượng bù đắp bằng các quyền lợi khác (tăng số lượng post, seeding hội nhóm).',
-                    'Đề xuất tạo minigame hoặc đăng ký form phụ mới để tích cực thu thập bù đắp số lượng còn thiếu.'
+                    'Giữ bình tĩnh, test nhanh các cổng kết nối khác hoặc khởi động lại.',
+                    'Dùng ngay bộ micro dây/mic dự phòng (luôn phải chuẩn bị trước) hoặc liên hệ mượn gấp micro từ ban quản lý hội trường.'
                 ],
                 score: null,
                 note: ''
@@ -409,11 +407,12 @@
             {
                 id: 16,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 16',
-                text: 'Bạn hãy thuyết phục mình mua một cuốn sổ với giá gấp ba lần giá ban đầu của cuốn sổ đó.',
+                text: 'Tình huống: Sự kiện dã ngoại ngoài trời đang diễn ra giữa chừng thì trời đột ngột đổ mưa lớn. Là người điều phối, bạn sẽ xử lý thế nào?',
                 keys: [
-                    'Chỉ ra và đẩy mạnh giá trị gia tăng đặc biệt (Bản thiết kế giới hạn, Ý nghĩa đóng góp quỹ từ thiện, Ý nghĩa nhân văn của dự án).'
+                    'Ưu tiên hàng đầu: Di tản người tham gia đến khu vực có mái che an toàn; ngắt điện và bọc bạt bảo vệ toàn bộ thiết bị âm thanh/ánh sáng.',
+                    'Chuyển sang kịch bản backup (hoạt động nhóm nhỏ trong phòng, minigame trong nhà có sẵn).'
                 ],
                 score: null,
                 note: ''
@@ -421,12 +420,12 @@
             {
                 id: 17,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 17',
-                text: 'Giả sử trong lúc bạn đang gọi điện cho NTT, cuộc gọi bị ngắt giữa chừng vì những lý do khách quan (Hết tiền điện thoại, Sóng yếu...), bạn sẽ xử lý thế nào?',
+                text: 'Tình huống: Kịch bản ghi rõ MC sẽ giới thiệu một tiết mục văn nghệ lúc 19h30, nhưng đến 19h25 ca sĩ/diễn viên biểu diễn vẫn chưa có mặt tại hậu trường. Bạn xử lý thế nào?',
                 keys: [
-                    'Chủ động khắc phục và gọi lại ngay lập tức.',
-                    'Gửi lời xin lỗi chân thành trước, tóm tắt nhanh nội dung đoạn hội thoại trước đó rồi tiếp tục.'
+                    'Liên hệ khẩn cấp xem họ đang ở đâu và dự kiến bao nhiêu phút nữa sẽ có mặt.',
+                    'Báo ngay cho MC để đảo thứ tự tiết mục tiếp theo lên trước, hoặc kéo dài phần trò chơi giao lưu khán giả.'
                 ],
                 score: null,
                 note: ''
@@ -434,12 +433,12 @@
             {
                 id: 18,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 18',
-                text: 'Khi gần đến ngày diễn ra sự kiện chính của dự án, phía NTT đột nhiên yêu cầu mức quyền lợi khác mà gây khó khăn cho phía BTC, bạn sẽ làm gì?',
+                text: 'Tình huống: Khách mời danh dự/Nhà tài trợ đến muộn 20 phút so với giờ xuất hiện theo kịch bản, trong khi chương trình đang chạy và sắp đến phần phát biểu của họ. Bạn điều tiết ra sao?',
                 keys: [
-                    'Luôn giữ bình tĩnh, rà soát đối chiếu lại điều khoản thỏa thuận/Hợp đồng đã ký.',
-                    'Đàm phán lịch sự giải bày khó khăn kỹ thuật và đưa ra giải pháp thay thế hợp lý.'
+                    'Chủ động dồn phần trò chuyện hoặc lùi thời gian phát biểu của họ xuống sau các tiết mục văn nghệ phụ.',
+                    'Báo MC khéo léo biến tấu lời dẫn, đôn một phần trao giải hoặc video giới thiệu lên trước để giữ chân khán giả.'
                 ],
                 score: null,
                 note: ''
@@ -447,12 +446,12 @@
             {
                 id: 19,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 19',
-                text: 'Bạn phát hiện một khoản chi “lạ” trong file chi tiêu do thành viên khác gửi. Người đó bảo "do nhầm thôi, không quan trọng đâu". Bạn sẽ làm gì?',
+                text: 'Tình huống: Bạn phát hiện một thành viên trong tiểu ban hậu cần tự ý thay đổi nhà cung cấp in ấn backdrop phút chót vì giá rẻ hơn, dẫn đến backdrop bị in sai kích thước và mờ nhạt. Bạn xử lý thành viên đó và khắc phục sự cố thế nào?',
                 keys: [
-                    'Kiên quyết rà soát và làm rõ đến cùng. Nguyên tắc tài chính là rõ ràng, không bỏ qua.',
-                    'Nếu người đó không hợp tác hoặc không giải trình được rõ ràng, báo cáo Trưởng ban/Cấp trên.'
+                    'Nhắc nhở nghiêm túc thành viên đó về việc tuân thủ quy trình phê duyệt của Trưởng ban.',
+                    'Khắc phục khẩn cấp: Liên hệ nhà in ấn cũ để in hỏa tốc bản thay thế, hoặc tận dụng hệ thống máy chiếu để hiển thị slide thay cho backdrop vật lý.'
                 ],
                 score: null,
                 note: ''
@@ -460,12 +459,12 @@
             {
                 id: 20,
                 part: 'part3',
-                partTitle: 'Phần III: Tình huống',
+                partTitle: 'Phần III: Tình huống (Hệ số 2)',
                 num: 'Câu 20',
-                text: 'Một nhà tài trợ đồng ý tài trợ 1 triệu đồng, nhưng họ muốn logo được đặt ở giữa backdrop – điều không phù hợp với thiết kế. Bạn sẽ phản hồi thế nào?',
+                text: 'Tình huống: Trong quá trình họp thống nhất kịch bản, ý tưởng của bạn bị các thành viên khác phản đối kịch liệt vì cho rằng không khả thi và tốn chi phí. Bạn ứng xử thế nào?',
                 keys: [
-                    'Từ chối khéo léo với lý do giữ quy chuẩn thẩm mỹ chung cho sự kiện và đảm bảo logo của họ không bị che khuất.',
-                    'Đề xuất bố trí logo ở các không gian nổi bật tương đương khác (Vị trí chính trên Standee đặt cửa, Đăng cảm ơn riêng biệt).'
+                    'Không cáu gắt; lắng nghe phản biện xem không khả thi ở điểm nào (tài chính, kỹ thuật hay nhân lực).',
+                    'Sẵn sàng tối ưu, đơn giản hóa ý tưởng hoặc chấp nhận bỏ qua để ủng hộ ý kiến chung tối ưu nhất cho tập thể.'
                 ],
                 score: null,
                 note: ''
@@ -474,12 +473,11 @@
             {
                 id: 21,
                 part: 'part4',
-                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức (Hệ số 1)',
                 num: 'Câu 21',
-                text: 'Vậy bạn còn apply CLB nào ngoài MCCM không? Nếu đỗ ..., thì bạn chọn cống hiến cho CLB nào?',
+                text: 'Bạn có ngại làm việc ngoài giờ, di chuyển xa hoặc khuân vác đồ đạc nặng trong quá trình chuẩn bị sự kiện không?',
                 keys: [
-                    'Thành thật chia sẻ tình trạng cá nhân.',
-                    'Cam kết phân bổ được thời gian và cam kết mức độ ưu tiên cống hiến lâu dài cho MCCM.'
+                    'Thể hiện thái độ xông xáo, không ngại gian khổ; sẵn sàng hỗ trợ hết mình vì lợi ích chung của sự kiện.'
                 ],
                 score: null,
                 note: ''
@@ -487,12 +485,12 @@
             {
                 id: 22,
                 part: 'part4',
-                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức (Hệ số 1)',
                 num: 'Câu 22',
-                text: 'Bạn đánh giá buổi phỏng vấn hôm nay bao nhiêu trên mười? Tại sao?',
+                text: 'Nếu CLB có lịch chạy sự kiện quan trọng trùng đúng vào tuần thi cử căng thẳng trên trường, bạn sẽ ưu tiên việc nào và giải quyết bài toán thời gian ra sao?',
                 keys: [
-                    'Đưa ra thang điểm số cụ thể rõ ràng.',
-                    'Tự nhận thức được điểm mình làm tốt và điểm mình còn hạn chế trong buổi phỏng vấn để cải thiện.'
+                    'Đảm bảo việc học là ưu tiên số một; lập kế hoạch ôn thi trước kỳ sự kiện diễn ra.',
+                    'Sắp xếp bàn giao đầu việc rõ ràng cho đồng đội trước tuần thi để tránh làm chậm tiến độ chung.'
                 ],
                 score: null,
                 note: ''
@@ -500,11 +498,11 @@
             {
                 id: 23,
                 part: 'part4',
-                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức (Hệ số 1)',
                 num: 'Câu 23',
-                text: 'Bạn còn gì muốn nhắn gửi MCCM không?',
+                text: 'Bạn tự đánh giá buổi phỏng vấn ngày hôm nay của mình đạt bao nhiêu điểm trên thang điểm 10? Đâu là điểm bạn thấy hài lòng nhất?',
                 keys: [
-                    'Thể hiện sự quan tâm tới CLB (Đặt câu hỏi ngược lại cho IV, hoặc thể hiện nhiệt huyết quyết tâm muốn đồng hành).'
+                    'Đưa ra điểm số khách quan (7-8/10); tự chỉ ra được điểm mạnh thể hiện tốt và phần cần trau dồi thêm.'
                 ],
                 score: null,
                 note: ''
@@ -512,12 +510,11 @@
             {
                 id: 24,
                 part: 'part4',
-                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức',
+                partTitle: 'Phần IV: Câu hỏi phụ & Thách thức (Hệ số 1)',
                 num: 'Câu 24',
-                text: 'Thử thách nhỏ: làm hành động thể hiện muốn vào CLB (càng hăng thì ok)',
+                text: 'Thử thách nhanh tại chỗ: Hãy khuấy động không khí phòng phỏng vấn trong vòng 1 phút (bằng cách kể chuyện cười, hát một đoạn, bắt nhịp trò chơi tập thể hoặc biểu cảm hài hước).',
                 keys: [
-                    'Sẵn sàng hành động nhanh chóng không rụt rè.',
-                    'Bộc lộ năng lượng tự tin, tích cực (Thả tim, chào khẩu hiệu, biểu cảm tươi vui).'
+                    'Sẵn sàng tham gia không rụt rè, bộc lộ năng lượng hướng ngoại, tự tin và vui tươi - tố chất rất cần cho người làm sự kiện.'
                 ],
                 score: null,
                 note: ''
@@ -603,14 +600,14 @@
                                 <input type="number" min="0" max="10" step="0.5" value="${q.score !== null ? q.score : ''}" 
                                     onchange="setManualScore(${q.id}, this.value)" 
                                     placeholder="-" 
-                                    class="w-12 bg-slate-50 border border-slate-200 text-center rounded-lg py-1 text-sm font-bold text-slate-800 outline-none focus:border-blue-500 focus:bg-white transition">
+                                    class="w-12 bg-slate-50 border border-slate-200 text-center rounded-lg py-1 text-sm font-bold text-slate-800 outline-none focus:border-indigo-500 focus:bg-white transition">
                             </div>
                         </div>
 
                         <!-- Guideline Box -->
                         <div class="bg-emerald-50/50 rounded-lg p-3 border border-emerald-100/50 space-y-1.5 text-xs">
                             <div class="font-bold text-emerald-800 flex items-center gap-1">
-                                <span class="material-icons text-sm">lightbulb</span> Ý chính cần có (Có ý này = PASS):
+                                <span class="material-icons text-sm">lightbulb</span> Ý chính cần có (Gợi ý câu trả lời đạt chuẩn):
                             </div>
                             <div class="space-y-1">
                                 ${keysHTML}
@@ -649,7 +646,7 @@
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.className = 'tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-600 hover:bg-slate-100';
             });
-            document.getElementById(`tab-${tabId}`).className = 'tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-blue-600 text-white shadow-sm';
+            document.getElementById(`tab-${tabId}`).className = 'tab-btn flex-1 py-2 px-3 text-xs font-semibold rounded-lg transition bg-indigo-600 text-white shadow-sm';
             renderQuestions();
         }
 
@@ -684,20 +681,18 @@
             }
         }
 
-        // Save Candidate Meta
         function saveCandidateData() {
-            // Can extend to save to localStorage to preserve state on refresh
             const data = {
                 name: document.getElementById('cand-name').value,
                 iv: document.getElementById('iv-name').value,
                 date: document.getElementById('iv-date').value
             };
-            localStorage.setItem('tachi_candidate', JSON.stringify(data));
+            localStorage.setItem('mccm_event_candidate', JSON.stringify(data));
         }
 
         function loadCandidateData() {
             try {
-                const stored = localStorage.getItem('tachi_candidate');
+                const stored = localStorage.getItem('mccm_event_candidate');
                 if (stored) {
                     const data = JSON.parse(stored);
                     document.getElementById('cand-name').value = data.name || '';
@@ -709,7 +704,6 @@
             }
         }
 
-        // Aggregate Calculations
         function calculateFinalScores() {
             const parts = ['part1', 'part2', 'part3', 'part4'];
             const partScores = {};
@@ -779,7 +773,7 @@
 
         // Reset
         function resetAll() {
-            if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ bảng điểm không? Dữ liệu hiện tại sẽ mất.")) {
+            if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ bảng điểm của ứng viên không?")) {
                 QUESTIONS.forEach(q => {
                     q.score = null;
                     q.note = '';
@@ -787,13 +781,12 @@
                 document.getElementById('cand-name').value = '';
                 document.getElementById('iv-name').value = '';
                 document.getElementById('iv-date').value = '';
-                localStorage.removeItem('tachi_candidate');
+                localStorage.removeItem('mccm_event_candidate');
                 calculateFinalScores();
                 renderQuestions();
             }
         }
 
-        // CSV Exporter (UTF-8 with BOM to display accents correctly in Excel)
         function exportToCSV() {
             const candName = document.getElementById('cand-name').value || 'Chưa đặt tên';
             const ivName = document.getElementById('iv-name').value || 'Chưa rõ';
@@ -808,7 +801,7 @@
             const finalStatus = document.getElementById('display-status').innerText.replace(/[^\w\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂĐÊÔƠƯưăâđêôơư]/g, '').trim();
 
             let csvContent = "\uFEFF"; // Unicode BOM for Excel compatibility
-            csvContent += "BẢNG ĐIỂM CHI TIẾT PHỎNG VẤN BAN TÀI CHÍNH TACHI (MCCM)\n";
+            csvContent += "BẢNG ĐIỂM CHI TIẾT PHỎNG VẤN BAN SỰ KIỆN (MCCM)\n";
             csvContent += `Ứng viên,${candName}\n`;
             csvContent += `Người chấm (IV),${ivName}\n`;
             csvContent += `Ngày phỏng vấn,${date}\n`;
@@ -836,7 +829,7 @@
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `Bảng_điểm_TACHI_${candName.replace(/\s+/g, '_')}.csv`);
+            link.setAttribute("download", `Bang_diem_Su_kien_MCCM_${candName.replace(/\s+/g, '_')}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
